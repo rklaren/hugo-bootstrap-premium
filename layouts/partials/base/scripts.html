@@ -28,7 +28,10 @@
   s.parentNode.insertBefore(g,s)}(document,'script'));
 </script>
 {{ end }}
+
+{{ if or (eq .Site.Params.popover.enablepopover true) (eq .Site.Params.switchlang true) }}
 <script>
+{{ if eq .Site.Params.popover.enablepopover true }}
 var ENABLE_POPOVER = {{.Site.Params.popover.enablepopover}}, // enable or disable popover: true/false.
 EXPIRE_COOKIE = {{.Site.Params.popover.expirecookie}}, // show it again after number of days to visitor that has not subscribed.
 SHOW_MODAL_TIMEOUT = {{.Site.Params.popover.showmodaltimeout}}, // show popover modal after time interval in milliseconds.
@@ -44,9 +47,15 @@ SUBMIT_BUTTON = {{.Site.Params.popover.submitbutton}},
 SUCCESS_MESSAGE = {{.Site.Params.popover.successmessage}},
 ERROR_MESSAGE = {{.Site.Params.popover.errormessage}},
 OPTIN = {{.Site.Params.popover.optin}},
-COOKIE_NAME = {{.Site.Params.popover.cookiename}},
-CONTENTLANGUAGE = {{ .Site.Params.DefaultContentLanguage }}; // used in pathnamereplace.js
+COOKIE_NAME = {{.Site.Params.popover.cookiename}}
+{{ end }}
+
+{{ if eq .Site.Params.popover.switchlang true }}
+var CONTENTLANGUAGE = {{ .Site.Params.DefaultContentLanguage }}; // used in pathnamereplace.js
+{{ end }}
 </script>
+{{ end }}
+
 {{ if eq .Site.Params.switchlang true }}
 <script src="{{ "js/pathnamereplace.js" | absURL }}"></script>
 {{ end }}
@@ -57,7 +66,7 @@ CONTENTLANGUAGE = {{ .Site.Params.DefaultContentLanguage }}; // used in pathname
 <script src="/js/popover/popover.min.js"></script>
 {{ end }}
 
-{{ if ne .Site.Params.mathjax "" }}
+{{ if and (isset .Site.Params "mathjax" ) ( ne .Site.Params.mathjax "" ) }}
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/{{.Site.Params.mathjax}}/MathJax.js"></script>
 <script type="text/javascript"
